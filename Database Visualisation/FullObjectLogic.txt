@@ -1,0 +1,63 @@
+<!-- 'Run' code at https://dbdiagram.io/d -->
+
+Table Image_Object {
+  image_id integer [primary key]
+  user_interactions char
+}
+
+Table Image_Comment_Junction {
+  image_id integer [ref: - Image_Object.image_id]
+  comment_id integer [ref: - Comment_Object.comment_id]
+  Indexes {
+    (image_id, comment_id)
+  }
+}
+
+Table Comment_Object {
+  comment_id integer [primary key]
+  metadata char
+  content char
+}
+
+Table User_Comment_Junction {
+  comment_id integer [ref: - Comment_Object.comment_id]
+  user_id integer [ref: - User_Object.user_id]
+  Indexes {
+    (user_id, comment_id)
+  }
+}
+
+Table User_Object {
+  user_id integer [primary key]
+  permissions_level char
+}
+
+Table Image_Tags {
+  tag_id integer [primary key]
+  metadata char
+}
+
+Table Image_Metadata {
+  image_id integer [ref: - Image_Object.image_id]
+  image_size char
+  blob_storage_uuid char
+  image_source_url char
+  upload_date char
+  status char
+}
+
+Table Image_Tag_Junction {
+  image_id integer [ref: - Image_Object.image_id]
+  tag_id integer [ref: - Image_Tags.tag_id]
+  Indexes {
+    (image_id, tag_id)
+  }
+}
+
+Table User_Metadata {
+  user_id integer [ref: - User_Object.user_id]
+  creation_date char
+  username char
+  permissions_level char
+  login_status char
+}
