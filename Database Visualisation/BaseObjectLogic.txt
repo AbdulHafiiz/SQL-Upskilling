@@ -30,6 +30,5 @@ Table User_Comment_Junction {
 
 Table User_Object {
   user_id integer [primary key]
-  permissions_level char
   metadata char
 }
