@@ -87,6 +87,22 @@ CREATE TABLE users_table IF NOT EXISTS (
     permission_level INTEGER(1) NOT NULL DEFAULT 0
 ) STRICT;
 
+-- IMAGE SAVED BY USER JUNCTION TABLE
+
+CREATE TABLE user_saved_images_table IF NOT EXISTS (
+    user_id INTEGER(6) NOT NULL,
+    image_id INTEGER(6) NOT NULL
+    PRIMARY KEY (user_id, image_id),
+    FOREIGN KEY (user_id)
+        REFERENCES users_table (user_id)
+            ON UPDATE CASCADE
+            ON DELETE NO ACTION
+    FOREIGN KEY (image_id)
+        REFERENCES images_table (image_id)
+            ON UPDATE CASCADE
+            ON DELETE NO ACTION
+) STRICT;
+
 -- COMMENT TABLE
 
 CREATE TABLE comments_table IF NOT EXISTS (
