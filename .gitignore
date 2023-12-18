@@ -162,3 +162,4 @@ cython_debug/
 # Local repo
 venv/
 requirements.txt
+*.db
