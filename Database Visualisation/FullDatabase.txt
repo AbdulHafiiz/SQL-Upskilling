@@ -1,0 +1,80 @@
+TABLE status_reference {
+  status_id int pk [unique]
+  name text [not null, unique]
+  category text [not null]
+  description text
+}
+
+TABLE permission_table {
+  permission_id int pk [not null]
+  name text [not null, unique]
+  description text
+}
+
+TABLE users_table {
+  user_id int pk
+  username text [not null]
+  creation_timestamp int [not null]
+  status_id int [not null, ref: > status_reference.status_id]
+  permission_level int [not null, ref: > permission_table.permission_id]
+}
+
+TABLE images_table {
+  image_id int pk
+  source_url text [not null]
+  blob_storage_uuid text [not null, unique]
+  shape text  [not null]
+  upload_timestamp timestamp [not null]
+  upload_date timestamp [not null]
+  status_id int [not null, ref: > status_reference.status_id]
+  description text [not null]
+  uploader_id int [not null, ref: > users_table.user_id]
+  likes int [not null]
+  dislikes int [not null]
+  Indexes {
+    (upload_timestamp, upload_date)
+  }
+}
+
+TABLE tags_table {
+  tag_id int pk unique
+  type_category text [not null]
+  name text [not null]
+  description text
+  status_id int [not null, ref: > status_reference.status_id]
+  creation_timestamp int [not null]
+}
+
+TABLE image_tag_junction {
+  tag_id int [not null, ref: > tags_table.tag_id] 
+  image_id int  [not null, ref: > images_table.image_id]
+  Indexes {
+    (tag_id, image_id)
+  }
+}
+
+TABLE user_favourites_junction {
+  image_id int [ref: > images_table.image_id]
+  user_id int [ref: > users_table.user_id]
+  Indexes {
+    (user_id, image_id) [unique]
+  }
+}
+
+TABLE comments_table {
+  comment_id int pk
+  status_id int [not null, ref: > status_reference.status_id]
+  content text [not null]
+  creation_timestamp int [not null]
+  edited bool [not null]
+  likes int [not null]
+  dislikes int [not null]
+}
+
+TABLE user_comments_junction {
+  user_id int [not null, ref: > users_table.user_id]
+  comment_id int [not null, ref: > comments_table.comment_id]
+  Indexes {
+    (user_id, comment_id)
+  }
+}
