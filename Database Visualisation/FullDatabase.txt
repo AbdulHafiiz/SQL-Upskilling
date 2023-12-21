@@ -29,7 +29,7 @@ TABLE images_table {
   upload_timestamp timestamp [not null]
   upload_date timestamp [not null]
   status_id int [not null, ref: > status_reference.status_id]
-  description text [not null]
+  description text
   uploader_id int [not null, ref: > users_table.user_id]
   likes int [not null]
   dislikes int [not null]
