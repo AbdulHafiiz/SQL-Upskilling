@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS users_table (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL,
     creation_timestamp INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_TIMESTAMP)),
-    status_id INTEGER NOT NULL DEFAULT 0,
+    status_id INTEGER NOT NULL DEFAULT 7,
     permission_id INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (permission_id)
         REFERENCES permission_reference (permission_id)
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS users_table (
 CREATE TABLE IF NOT EXISTS images_table (
     image_id INTEGER PRIMARY KEY AUTOINCREMENT,
     source_url TEXT NOT NULL,
-    blob_storage_uuid TEXT NOT NULL UNIQUE,
+    blob_storage_uuid BLOB NOT NULL,
     shape TEXT NOT NULL,
     upload_timestamp INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_TIMESTAMP)),
     upload_date INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)),
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS user_favourites_junction (
 
 CREATE TABLE IF NOT EXISTS comments_table (
     comment_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    status_id INTEGER NOT NULL DEFAULT 0,
+    status_id INTEGER NOT NULL DEFAULT 12,
     content TEXT NOT NULL,
     creation_date INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_TIMESTAMP)),
     edited INTEGER NOT NULL DEFAULT 0,
