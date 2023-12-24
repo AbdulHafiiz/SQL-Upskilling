@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS images_table (
 
 ) STRICT;
 
-CREATE INDEX indexed_image_datetime
+CREATE INDEX IF NOT EXISTS indexed_image_datetime
     ON images_table (upload_timestamp, upload_date);
 
 -- TAG TABLE
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS comments_table (
     likes INTEGER NOT NULL DEFAULT 0,
     dislikes INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (status_id)
-        REFERENCES status_table (status_id)
+        REFERENCES status_reference (status_id)
             ON UPDATE CASCADE
             ON DELETE NO ACTION
 ) STRICT;
@@ -146,5 +146,16 @@ CREATE TABLE IF NOT EXISTS user_comment_junction (
             ON UPDATE CASCADE
             ON DELETE NO ACTION
 );
+
+COMMIT;
+
+BEGIN;
+
+.import --csv --skip 1 ./database/csv/comments_table.csv comments_table
+.import --csv --skip 1 ./database/images_table.csv images_table
+.import --csv --skip 1 ./database/permission_reference.csv permission_reference
+.import --csv --skip 1 ./database/status_reference.csv status_reference
+.import --csv --skip 1 ./database/tags_table.csv tags_table
+.import --csv --skip 1 ./database/users_table.csv users_table
 
 COMMIT;
