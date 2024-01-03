@@ -2,7 +2,6 @@
 .echo ON
 .bail ON
 .timer ON
-.mode box --wrap 25
 .log "./logs/database_creation.log"
 
 PRAGMA foreign_keys = ON;
@@ -146,25 +145,5 @@ CREATE TABLE IF NOT EXISTS user_comment_junction (
             ON UPDATE CASCADE
             ON DELETE NO ACTION
 );
-
-COMMIT;
-
-BEGIN;
-
-INSERT INTO status_reference (status_id, "name", category)
-VALUES (-1, 'missing', 'error_handling');
-
-INSERT INTO permission_id (permission_id, "name")
-VALUES (-1, 'missing');
-
-INSERT INTO users_table (user_id, username, creation_timestamp, status_id, permission_id)
-VALUES (-1, 'missing', 0, -1, -1);
-
-.import --csv --skip 1 ./database/csv/comments_table.csv comments_table
-.import --csv --skip 1 ./database/images_table.csv images_table
-.import --csv --skip 1 ./database/permission_reference.csv permission_reference
-.import --csv --skip 1 ./database/status_reference.csv status_reference
-.import --csv --skip 1 ./database/tags_table.csv tags_table
-.import --csv --skip 1 ./database/users_table.csv users_table
 
 COMMIT;
