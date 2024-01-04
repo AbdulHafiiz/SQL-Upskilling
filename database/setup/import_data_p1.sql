@@ -1,7 +1,4 @@
-.eqp ON
-.echo ON
 .bail ON
-.timer ON
 .log "./logs/data_import_p1.log"
 
 BEGIN;

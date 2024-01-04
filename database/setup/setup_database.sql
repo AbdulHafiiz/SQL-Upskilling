@@ -1,7 +1,4 @@
-.eqp ON
-.echo ON
 .bail ON
-.timer ON
 .log "./logs/database_creation.log"
 
 PRAGMA foreign_keys = ON;
