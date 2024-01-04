@@ -6,8 +6,8 @@
 
 BEGIN;
 
-.import --csv --skip 1 ./database/csv/image_tag_junction.csv image_tag_junction
-.import --csv --skip 1 ./database/csv/user_comment_junction.csv user_comment_junction
-.import --csv --skip 1 ./database/csv/user_favourites_junction.csv user_favourites_junction
+.import --csv ./database/csv/image_tag_junction.csv image_tag_junction
+.import --csv ./database/csv/user_comment_junction.csv user_comment_junction
+.import --csv ./database/csv/user_favourites_junction.csv user_favourites_junction
 
 COMMIT;
