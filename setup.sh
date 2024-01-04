@@ -19,7 +19,15 @@ then
 fi
 
 # Setup and populate data
+echo "Creating random data."
+eval "$WORKING_DIR/venv/bin/python3.10 ./database/setup/populate_data.py"
+
+echo "Setting up Sqlite database."
 sqlite3 ./database/website_database.db < ./database/setup/setup_database.sql
+
+echo "Importing data."
 sqlite3 ./database/website_database.db < ./database/setup/import_data_p1.sql
 eval "$WORKING_DIR/venv/bin/python3.10 ./database/setup/import_data_p2.py"
 sqlite3 ./database/website_database.db < ./database/setup/import_data_p3.sql
+
+echo "Setup complete."
