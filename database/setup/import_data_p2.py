@@ -1,11 +1,3 @@
-#!/bin/sh
-"true" '''\'
-exec "$(cd "$(dirname "$0")" && pwd && cd ....)/venv/bin/python3.10"
-'''
-# Somehow have to force the script to run using a specific intepreter
-
-__doc__ = """A docstring"""
-
 import numpy as np
 import pandas as pd
 import sqlite3 as sql
@@ -18,6 +10,52 @@ import ciso8601 as fasttime
 from itertools import cycle, permutations, repeat
 rng = np.random.default_rng()
 
+
+def time_dependent_random(independent_time, dependent_time, random_func, offset=0):
+    start_time, end_time = dependent_time.min(), dependent_time.max()
+    batch_independent_timestamps = np.concatenate([[0], independent_time[np.where(independent_time <= end_time)], [2147483647]])
+    independent_count = np.where(independent_time <= start_time)[0].shape[0]
+    batch_pointer_idx = 0
+    minibatch_lst = []
+
+    for idx in range(len(batch_independent_timestamps)-1):
+        if independent_count == 0:
+            independent_count += 1
+            batch_pointer_idx += np.where(dependent_time < independent_time[idx])[0].shape[0]
+            continue
+
+        lower_time, upper_time = batch_independent_timestamps[idx:idx+2]
+        minibatch = np.where(np.logical_and(lower_time <= dependent_time, dependent_time < upper_time))[0]
+        if minibatch.shape[0] == 0:
+            continue
+
+        joined_index = np.cumsum(
+            np.clip(
+                np.round(
+                    random_func(size=minibatch.shape[0])+1
+                ),
+                a_min=0,
+                a_max=independent_count
+            ),
+            dtype=int
+        )
+        joined_choice = np.random.choice(np.arange(0, independent_count), size=joined_index[-1]).astype(int)
+
+        minibatch_lst.append(
+            np.column_stack((
+                joined_choice,
+                np.repeat(
+                    np.arange(batch_pointer_idx, batch_pointer_idx+minibatch.shape[0]),
+                    np.insert(np.ediff1d(joined_index), 0, joined_index[0])
+                ).astype(int)
+            ))
+        )
+        batch_pointer_idx += minibatch.shape[0]
+        independent_count += 1
+
+    result = np.vstack(minibatch_lst)
+    result[:, 1] += offset
+    return result
 
 # Constants
 user_count = 50_000
