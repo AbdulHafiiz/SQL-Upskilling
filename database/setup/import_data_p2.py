@@ -66,6 +66,7 @@ start_time = mktime(fasttime.parse_datetime("2009-05-20").timetuple())
 end_time = mktime(fasttime.parse_datetime("2023-12-28").timetuple())
 batch_timediff = (end_time - start_time)/batch_count
 user_timestamps = np.transpose(pd.read_csv("./database/csv/users_table.csv", usecols=["creation_timestamp"]).to_numpy())[0]
+image_timestamps = np.transpose(pd.read_csv("./database/csv/image_timestamps.csv", usecols["creation_timestamp"]).to_numpy())[0]
 
 # Image Resolution constants
 common_aspect_ratios = [(1, 1), (3, 2), (5, 4), (1, 2), (2, 1)]
@@ -120,13 +121,6 @@ for idx in range(batch_count):
         ]
     )
 
-    # Dates and timestamps
-    image_timestamps = np.sort(np.random.randint(
-        low=floor(start_time+batch_timediff*idx),
-        high=floor(start_time+batch_timediff*(idx+1)),
-        size=batch_size
-    ))
-
     image_dates = np.sort(np.array([
         mktime(fasttime.parse_datetime(t).date().timetuple())
         for t in image_timestamps.astype("datetime64[s]").astype(str)
@@ -174,7 +168,7 @@ for idx in range(batch_count):
             """,
             zip(
                 index.astype(str), urls.astype(str), blob_uuids,
-                image_shape.astype(str), image_timestamps.astype(str),
+                image_shape.astype(str), image_timestamps[batch_size*idx:batch_size*(idx+1)].astype(str),
                 image_dates.astype(str), image_status.astype(str),
                 description, uploader_id.astype(str), likes.astype(str),
                 dislikes.astype(str)

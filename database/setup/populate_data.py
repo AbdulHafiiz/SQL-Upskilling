@@ -184,6 +184,22 @@ if not path.exists("./database/csv/users_table.csv"):
     del string, usernames, user_timestamps, temp_status_id, status_id, permission_level, user_count
 
 
+## Images Timestamp Table (1,000,000 rows)
+if not path.except("./database/csv/image_timestamps.csv"):
+    start_time = mktime(fasttime.parse_datetime("2009-05-20").timetuple())
+    end_time = mktime(fasttime.parse_datetime("2023-12-28").timetuple())
+
+    image_timestamps = np.sort(np.random.randint(
+        low=floor(start_time),
+        high=floor(end_time),
+        size=1_000_000
+    ))
+
+    with open("./database/csv/image_timestamps.csv", "w") as file:
+        file.writelines(image_timestamp.astype(str))
+
+    del start_time, end_time, image_timestamp, file
+
 ## Comments Table (2,500,000 rows)
 if not path.exists("./database/csv/comments_table.csv"):
     batch_size = 100_000
