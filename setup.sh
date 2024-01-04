@@ -1,10 +1,25 @@
 #!/bin/bash
 
-# https://stackoverflow.com/questions/20095351/shebang-use-interpreter-relative-to-the-script-path
-# https://unix.stackexchange.com/questions/17499/get-path-of-current-script-when-executed-through-a-symlink
+# Get working dirs
+WORKING_DIR="$(dirname "$(readlink -f "$0")")"
+SQLITE_DIR="$(which sqlite3)"
 
+# Check if sqlite is installed otherwise exit
+if [[ -z "$SQLITE_DIR" ]]
+then
+    echo "Please install sqlite3 on this device."
+    exit
+fi
 
-# sqlite3 ./database/website_database.db < ./database/setup/setup_database.sql
-# sqlite3 ./database/website_database.db < ./database/setup/import_data_p1.sql
-./database/setup/import_data_p2.py
-# sqlite3 ./database/website_database.db < ./database/setup/import_data_p3.sql
+# Remove any old database files
+if [[ -e "$WORKING_DIR/database/website_database.db" ]]
+then
+    echo "Clearing old database file."
+    rm "$WORKING_DIR/database/website_database.db"
+fi
+
+# Setup and populate data
+sqlite3 ./database/website_database.db < ./database/setup/setup_database.sql
+sqlite3 ./database/website_database.db < ./database/setup/import_data_p1.sql
+eval "$WORKING_DIR/venv/bin/python3.10 ./database/setup/import_data_p2.py"
+sqlite3 ./database/website_database.db < ./database/setup/import_data_p3.sql
