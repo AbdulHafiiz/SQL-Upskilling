@@ -201,7 +201,6 @@ if not path.exists("./database/csv/comments_table.csv"):
         file.write("comment_id,status_id,content,creation_timestamp,edited,likes,dislikes\n")
 
         for idx in range(batch_count):
-            print(f"Batch {idx+1}")
             index = np.arange(batch_size*idx, batch_size*(idx+1)).astype(str)
 
             comment_content = np.apply_along_axis(
@@ -267,7 +266,6 @@ if not path.exists("./database/csv/image_tag_junction.csv"):
 
         # Batched data processing
         for batch_idx, line in enumerate(image_file):
-            print(f"Batch {batch_idx+1}")
             
             # Loading batched data from csv file
             image_line = [image_file.readline() for _ in range(batch_size)]
@@ -308,7 +306,6 @@ if not path.exists("./database/csv/user_comments_junction.csv"):
 
         # Batched data processing
         for batch_idx, line in enumerate(comment_file):
-            print(f"Batch {batch_idx+1}")
             
             # Loading batched data from csv file
             comment_line = [comment_file.readline() for _ in range(batch_size)]

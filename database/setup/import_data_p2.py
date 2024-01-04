@@ -94,7 +94,6 @@ for ratio in common_aspect_ratios:
 description = cycle([""])
 
 for idx in range(batch_count):
-    print(f"Batch {idx+1}")
     index = np.arange(batch_size*idx, batch_size*(idx+1))
     
     # Image URLs and UUIDs
