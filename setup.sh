@@ -31,3 +31,6 @@ eval "$WORKING_DIR/venv/bin/python3.10 ./database/setup/import_data_p2.py"
 sqlite3 ./database/website_database.db < ./database/setup/import_data_p3.sql
 
 echo "Setup complete."
+
+# TODO
+# 1. Check sqlite version (min 3.44)

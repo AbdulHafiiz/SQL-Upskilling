@@ -10,7 +10,7 @@ import ciso8601 as fasttime
 from itertools import cycle, permutations, repeat
 rng = np.random.default_rng()
 
-
+# TODO FIX ERROR, ONLY 100k ROWS ARE UPLOADED
 def time_dependent_random(independent_time, dependent_time, random_func, offset=0):
     start_time, end_time = dependent_time.min(), dependent_time.max()
     batch_independent_timestamps = np.concatenate([[0], independent_time[np.where(independent_time <= end_time)], [2147483647]])
@@ -177,6 +177,13 @@ def main():
                     dislikes.astype(str)
                 )
             )
+            res = con.execute(
+                """
+                SELECT COUNT(*)
+                FROM images_table;
+                """
+            )
+            print(res.fetchall())
 
     del ( 
         batch_size, batch_count, common_aspect_ratios, custom_uncommon_ratios, image_sizes, pixelart_heights, custom_image_heights,
