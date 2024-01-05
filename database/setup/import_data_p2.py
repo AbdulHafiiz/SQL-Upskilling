@@ -68,7 +68,7 @@ def main():
     end_time = mktime(fasttime.parse_datetime("2023-12-28").timetuple())
     batch_timediff = (end_time - start_time)/batch_count
     user_timestamps = np.transpose(pd.read_csv("./database/csv/users_table.csv", usecols=["creation_timestamp"]).to_numpy())[0]
-    image_timestamps = np.transpose(pd.read_csv("./database/csv/image_timestamps.csv", header=None).to_numpy())[0]
+    full_image_timestamps = np.transpose(pd.read_csv("./database/csv/image_timestamps.csv", header=None).to_numpy())[0]
 
     # Image Resolution constants
     common_aspect_ratios = [(1, 1), (3, 2), (5, 4), (1, 2), (2, 1)]
@@ -96,8 +96,9 @@ def main():
     # Text padding
     description = cycle([""])
 
-    for idx in range(batch_count):
-        index = np.arange(batch_size*idx, batch_size*(idx+1))
+    for batch_idx in range(batch_count):
+        index = np.arange(batch_size*batch_idx, batch_size*(batch_idx+1))
+        image_timestamps = full_image_timestamps[batch_size*batch_idx:batch_size*(batch_idx+1)]
         
         # Image URLs and UUIDs
         urls = np.array([
@@ -142,7 +143,7 @@ def main():
 
         # Uploader ID
         uploader_id = time_dependent_random(independent_time=user_timestamps, dependent_time=image_timestamps, random_func=random_func, offset=0)[:, 0]
-        if uploader_id.shape[0] != batch_size:
+        if uploader_id.shape[0] < batch_size:
             uploader_id = np.concatenate([np.full(shape=batch_size-uploader_id.shape[0], fill_value=-1), uploader_id])
 
         # Likes and Dislike
@@ -170,7 +171,7 @@ def main():
                 """,
                 zip(
                     index.astype(str), urls.astype(str), blob_uuids,
-                    image_shape.astype(str), image_timestamps[batch_size*idx:batch_size*(idx+1)].astype(str),
+                    image_shape.astype(str), image_timestamps[batch_size*batch_idx:batch_size*(batch_idx+1)].astype(str),
                     image_dates.astype(str), image_status.astype(str),
                     description, uploader_id.astype(str), likes.astype(str),
                     dislikes.astype(str)
@@ -179,7 +180,7 @@ def main():
 
     del ( 
         batch_size, batch_count, common_aspect_ratios, custom_uncommon_ratios, image_sizes, pixelart_heights, custom_image_heights,
-        custom_pixelart_sizes, custom_common_image_sizes, custom_uncommon_image_sizes, ratio, height, idx, urls, blob_uuids,
+        custom_pixelart_sizes, custom_common_image_sizes, custom_uncommon_image_sizes, ratio, height, urls, blob_uuids,
         image_shape, image_timestamps, image_dates, temp_status_id, image_status, uploader_id, likes, dislikes,
         description, index, user_count, start_time, end_time, batch_timediff, user_timestamps
     )
@@ -190,4 +191,5 @@ if __name__ == "__main__":
         print("Importing image table data")
         main()
     except Exception as err:
+        raise err
         print(f"Warning error importing image table data. {err}")
