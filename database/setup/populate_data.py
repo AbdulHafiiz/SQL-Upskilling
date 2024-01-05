@@ -64,327 +64,376 @@ def time_dependent_random(independent_time, dependent_time, random_func, offset=
 
 ## Status Reference Table (21 rows)
 if not path.exists("./database/csv/status_reference.csv"):
-    status_reference = [
-        {"status_id": 0, "name": "image_pending", "category": "actionable_timed", "description": "Image under review."},
-        {"status_id": 1, "name": "image_appealed", "category": "actionable_timed", "description": "Image to be reassessed."},
-        {"status_id": 2, "name": "image_reported", "category": "actionable_untimed", "description": "Image reported, pending review."},
-        {"status_id": 3, "name": "image_accepted", "category": "decision", "description": "Image approved for display."},
-        {"status_id": 4, "name": "image_rejected", "category": "decision", "description": "Image rejected."},
-        {"status_id": 5, "name": "image_marked_deletion", "category": "decision", "description": "Image marked for deletion, will automatically delete after 7 days."},
-        {"status_id": 6, "name": "image_deleted", "category": "decision_final", "description": "Image deleted, do not display."},
-        {"status_id": 7, "name": "user_acceptable", "category": "decision", "description": "User fine, no action neede."},
-        {"status_id": 8, "name": "user_reported", "category": "actionable_untimed", "description": "User reported, pending review."},
-        {"status_id": 9, "name": "user_muted", "category": "decision", "description": "User muted, cannot post comments or upload images."},
-        {"status_id": 10, "name": "user_mute_appeal", "category": "actionable_untimed", "description": "User to be reassessed."},
-        {"status_id": 11, "name": "user_banned", "category": "decision_final", "description": "User banned, account access restricted."},
-        {"status_id": 12, "name": "comment_acceptable", "category": "decision", "description": "Comment fine, no action neede."},
-        {"status_id": 13, "name": "comment_reported", "category": "actionable_untimed", "description": "Comment reported, pending review."},
-        {"status_id": 14, "name": "comment_hidden", "category": "decision", "description": "Comment hidden from general view."},
-        {"status_id": 15, "name": "comment_deleted", "category": "decision_final", "description": "Comment deleted, do not display."},
-        {"status_id": 16, "name": "tag_pending", "category": "actionable_timed", "description": "Tag under review."},
-        {"status_id": 17, "name": "tag_appealed", "category": "actionable_timed", "description": "Tag to be reassessed."},
-        {"status_id": 18, "name": "tag_reported", "category": "actionable_untimed", "description": "Tag reported, pending review."},
-        {"status_id": 19, "name": "tag_accepted", "category": "decision", "description": "Tag approved for use."},
-        {"status_id": 20, "name": "tag_rejected", "category": "decision", "description": "Tag rejected for use."}
-    ]
+    print("Creating status reference table.")
 
-    pd.DataFrame.from_records(status_reference).to_csv("./database/csv/status_reference.csv", index=False)
-    del status_reference
+    try:
+        status_reference = [
+            {"status_id": 0, "name": "image_pending", "category": "actionable_timed", "description": "Image under review."},
+            {"status_id": 1, "name": "image_appealed", "category": "actionable_timed", "description": "Image to be reassessed."},
+            {"status_id": 2, "name": "image_reported", "category": "actionable_untimed", "description": "Image reported, pending review."},
+            {"status_id": 3, "name": "image_accepted", "category": "decision", "description": "Image approved for display."},
+            {"status_id": 4, "name": "image_rejected", "category": "decision", "description": "Image rejected."},
+            {"status_id": 5, "name": "image_marked_deletion", "category": "decision", "description": "Image marked for deletion, will automatically delete after 7 days."},
+            {"status_id": 6, "name": "image_deleted", "category": "decision_final", "description": "Image deleted, do not display."},
+            {"status_id": 7, "name": "user_acceptable", "category": "decision", "description": "User fine, no action neede."},
+            {"status_id": 8, "name": "user_reported", "category": "actionable_untimed", "description": "User reported, pending review."},
+            {"status_id": 9, "name": "user_muted", "category": "decision", "description": "User muted, cannot post comments or upload images."},
+            {"status_id": 10, "name": "user_mute_appeal", "category": "actionable_untimed", "description": "User to be reassessed."},
+            {"status_id": 11, "name": "user_banned", "category": "decision_final", "description": "User banned, account access restricted."},
+            {"status_id": 12, "name": "comment_acceptable", "category": "decision", "description": "Comment fine, no action neede."},
+            {"status_id": 13, "name": "comment_reported", "category": "actionable_untimed", "description": "Comment reported, pending review."},
+            {"status_id": 14, "name": "comment_hidden", "category": "decision", "description": "Comment hidden from general view."},
+            {"status_id": 15, "name": "comment_deleted", "category": "decision_final", "description": "Comment deleted, do not display."},
+            {"status_id": 16, "name": "tag_pending", "category": "actionable_timed", "description": "Tag under review."},
+            {"status_id": 17, "name": "tag_appealed", "category": "actionable_timed", "description": "Tag to be reassessed."},
+            {"status_id": 18, "name": "tag_reported", "category": "actionable_untimed", "description": "Tag reported, pending review."},
+            {"status_id": 19, "name": "tag_accepted", "category": "decision", "description": "Tag approved for use."},
+            {"status_id": 20, "name": "tag_rejected", "category": "decision", "description": "Tag rejected for use."}
+        ]
+
+        pd.DataFrame.from_records(status_reference).to_csv("./database/csv/status_reference.csv", index=False)
+        del status_reference
+    except Exception as err:
+        print("Warning error creating status reference table. {err}")
 
 
 ## Permission Reference Table (4 rows)
 if not path.exists("./database/csv/premission_reference.csv"):
-    permission_reference = [
-        {"permission_id": 0, "name": "basic", "description": "Basic user, no special permissions."},
-        {"permission_id": 1, "name": "premium", "description": "Premium user, able to view deleted images."},
-        {"permission_id": 2, "name": "moderator", "description": "Moderator, able to act on reports."},
-        {"permission_id": 3, "name": "admin", "description": "Administrator."},
-    ]
+    print("Creating permission reference table.")
 
-    pd.DataFrame.from_records(permission_reference).to_csv("./database/csv/permission_reference.csv", index=False)
-    del permission_reference
+    try:
+        permission_reference = [
+            {"permission_id": 0, "name": "basic", "description": "Basic user, no special permissions."},
+            {"permission_id": 1, "name": "premium", "description": "Premium user, able to view deleted images."},
+            {"permission_id": 2, "name": "moderator", "description": "Moderator, able to act on reports."},
+            {"permission_id": 3, "name": "admin", "description": "Administrator."},
+        ]
+
+        pd.DataFrame.from_records(permission_reference).to_csv("./database/csv/permission_reference.csv", index=False)
+        del permission_reference
+    except Exception as err:
+        print("Warning error creating permission reference table. {err}")
 
 
 ## Tags Table (400 rows)
 if not path.exists("./database/csv/tags_table.csv"):
-    with open("./database/setup/reference/nouns.txt", "r") as file:
-        nouns = file.read().splitlines()
+    print("Creating tags table.")
 
-    tag_names = np.random.choice(a=nouns, size=400)
-    tag_count = len(tag_names)
-    description = cycle([""])
+    try:
+        with open("./database/setup/reference/nouns.txt", "r") as file:
+            nouns = file.read().splitlines()
 
-    tag_categories = cycle(["general"])
-    temp_status_id = rng.choice(
-        a=[16, 17, 18, 19, 20],
-        size=tag_count,
-        p=[0.15, 0.01, 0.01, 0.71, 0.12]
-    )
+        tag_names = np.random.choice(a=nouns, size=400)
+        tag_count = len(tag_names)
+        description = cycle([""])
 
-    creation_timestamps = np.sort(np.random.randint(
-        low=int(mktime(fasttime.parse_datetime("2009-05-14").timetuple())),
-        high=int(mktime(fasttime.parse_datetime("2023-12-28").timetuple())),
-        size=tag_count
-    ))
+        tag_categories = cycle(["general"])
+        temp_status_id = rng.choice(
+            a=[16, 17, 18, 19, 20],
+            size=tag_count,
+            p=[0.15, 0.01, 0.01, 0.71, 0.12]
+        )
 
-    tag_status = [
-        19 if t < mktime(fasttime.parse_datetime("2021-04-03").timetuple()) else temp_status_id[idx]
-        for idx, t in enumerate(creation_timestamps)
-    ]
+        creation_timestamps = np.sort(np.random.randint(
+            low=int(mktime(fasttime.parse_datetime("2009-05-14").timetuple())),
+            high=int(mktime(fasttime.parse_datetime("2023-12-28").timetuple())),
+            size=tag_count
+        ))
 
-    tags = sorted([*zip(range(tag_count), tag_categories, tag_names, description, tag_status, creation_timestamps)], key=lambda x: x[-1])
-    pd.DataFrame(tags, columns=["tag_id", "type_category", "name", "description", "status_id", "creation_timestamp"]).to_csv("./database/csv/tags_table.csv", index=False)
+        tag_status = [
+            19 if t < mktime(fasttime.parse_datetime("2021-04-03").timetuple()) else temp_status_id[idx]
+            for idx, t in enumerate(creation_timestamps)
+        ]
 
-    del tag_names, tag_categories, temp_status_id, creation_timestamps, tag_status, tag_count, tags, description
+        tags = sorted([*zip(range(tag_count), tag_categories, tag_names, description, tag_status, creation_timestamps)], key=lambda x: x[-1])
+        pd.DataFrame(tags, columns=["tag_id", "type_category", "name", "description", "status_id", "creation_timestamp"]).to_csv("./database/csv/tags_table.csv", index=False)
+
+        del tag_names, tag_categories, temp_status_id, creation_timestamps, tag_status, tag_count, tags, description
+    except Exception as err:
+        print("Warning error creating tags table. {err}")
 
 
 ## Users Table (50,000 rows)
 if not path.exists("./database/csv/users_table.csv"):
-    user_count = 50_000
-    string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+_"
-    usernames = np.apply_along_axis(
-        func1d=lambda x:"".join(x),
-        axis=1,
-        arr=rng.choice(a=list(string), size=(user_count, 14))
-    )
+    print("Creating users table.")
 
-    user_timestamps = np.sort(np.random.randint(
-        low=int(mktime(fasttime.parse_datetime("2009-05-14").timetuple())),
-        high=int(mktime(fasttime.parse_datetime("2023-12-28").timetuple())),
-        size=user_count-120
-    ))
-    # Inject initial 120 users as preregistered users
-    user_timestamps = np.concatenate([
-        [int(mktime(fasttime.parse_datetime("2009-05-14").timetuple())) for _ in range(120)],
-        user_timestamps
-    ])
+    try:
+        user_count = 50_000
+        string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+_"
+        usernames = np.apply_along_axis(
+            func1d=lambda x:"".join(x),
+            axis=1,
+            arr=rng.choice(a=list(string), size=(user_count, 14))
+        )
 
-    temp_status_id = rng.choice(
-        a=range(7, 12),
-        size=user_count,
-        p=[0.88, 0.01, 0.02, 0.01, 0.08]
-    )
+        user_timestamps = np.sort(np.random.randint(
+            low=int(mktime(fasttime.parse_datetime("2009-05-14").timetuple())),
+            high=int(mktime(fasttime.parse_datetime("2023-12-28").timetuple())),
+            size=user_count-120
+        ))
+        # Inject initial 120 users as preregistered users
+        user_timestamps = np.concatenate([
+            [int(mktime(fasttime.parse_datetime("2009-05-14").timetuple())) for _ in range(120)],
+            user_timestamps
+        ])
 
-    status_id = [
-        7 if t < mktime(fasttime.parse_datetime("2023-12-22").timetuple()) else temp_status_id[idx]
-        for idx, t in enumerate(user_timestamps)
-    ]
+        temp_status_id = rng.choice(
+            a=range(7, 12),
+            size=user_count,
+            p=[0.88, 0.01, 0.02, 0.01, 0.08]
+        )
 
-    permission_level = rng.choice(
-        a=range(4),
-        size=user_count,
-        p=[0.832388, 0.166522, 0.001064, 0.000026]
-    )
+        status_id = [
+            7 if t < mktime(fasttime.parse_datetime("2023-12-22").timetuple()) else temp_status_id[idx]
+            for idx, t in enumerate(user_timestamps)
+        ]
+
+        permission_level = rng.choice(
+            a=range(4),
+            size=user_count,
+            p=[0.832388, 0.166522, 0.001064, 0.000026]
+        )
 
 
-    pd.DataFrame(
-        zip(range(user_count), usernames, user_timestamps, status_id, permission_level),
-        columns=["user_id", "username", "creation_timestamp", "status_id", "permission_id"]
-    ).to_csv("./database/csv/users_table.csv", index=False)
-    del string, usernames, user_timestamps, temp_status_id, status_id, permission_level, user_count
+        pd.DataFrame(
+            zip(range(user_count), usernames, user_timestamps, status_id, permission_level),
+            columns=["user_id", "username", "creation_timestamp", "status_id", "permission_id"]
+        ).to_csv("./database/csv/users_table.csv", index=False)
+        del string, usernames, user_timestamps, temp_status_id, status_id, permission_level, user_count
+    except Exception as err:
+        print("Warning error creating users table. {err}")
 
 
 ## Images Timestamp Table (1,000,000 rows)
-if not path.except("./database/csv/image_timestamps.csv"):
-    start_time = mktime(fasttime.parse_datetime("2009-05-20").timetuple())
-    end_time = mktime(fasttime.parse_datetime("2023-12-28").timetuple())
+if not path.exists("./database/csv/image_timestamps.csv"):
+    print("Creating image table.")
 
-    image_timestamps = np.sort(np.random.randint(
-        low=floor(start_time),
-        high=floor(end_time),
-        size=1_000_000
-    ))
+    try:
+        start_time = mktime(fasttime.parse_datetime("2009-05-20").timetuple())
+        end_time = mktime(fasttime.parse_datetime("2023-12-28").timetuple())
 
-    with open("./database/csv/image_timestamps.csv", "w") as file:
-        file.writelines(image_timestamp.astype(str))
+        image_timestamps = np.sort(np.random.randint(
+            low=floor(start_time),
+            high=floor(end_time),
+            size=1_000_000
+        ))
 
-    del start_time, end_time, image_timestamp, file
+        with open("./database/csv/image_timestamps.csv", "w") as file:
+            file.writelines(image_timestamp.astype(str))
+
+        del start_time, end_time, image_timestamp, file
+    except Exception as err:
+        print("Warning error creating images table. {err}")
+
 
 ## Comments Table (2,500,000 rows)
 if not path.exists("./database/csv/comments_table.csv"):
-    batch_size = 100_000
-    batch_count = 2_500_000//batch_size
-    start_time = mktime(fasttime.parse_datetime("2009-05-20").timetuple())
-    end_time = mktime(fasttime.parse_datetime("2023-12-28").timetuple())
-    batch_timediff = (end_time - start_time)/batch_count
+    print("Creating comments table.")
 
-    string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    try:
+        batch_size = 100_000
+        batch_count = 2_500_000//batch_size
+        start_time = mktime(fasttime.parse_datetime("2009-05-20").timetuple())
+        end_time = mktime(fasttime.parse_datetime("2023-12-28").timetuple())
+        batch_timediff = (end_time - start_time)/batch_count
 
-    # Newline padding
-    newline_padding = cycle("\n")
+        string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
-    with open("./database/csv/comments_table.csv", "a+") as file:
-        file.write("comment_id,status_id,content,creation_timestamp,edited,likes,dislikes\n")
+        # Newline padding
+        newline_padding = cycle("\n")
 
-        for idx in range(batch_count):
-            index = np.arange(batch_size*idx, batch_size*(idx+1)).astype(str)
+        with open("./database/csv/comments_table.csv", "a+") as file:
+            file.write("comment_id,status_id,content,creation_timestamp,edited,likes,dislikes\n")
 
-            comment_content = np.apply_along_axis(
-                func1d=lambda x: " ".join(x),
-                axis=1,
-                arr=np.apply_along_axis(
-                    func1d=lambda x:"".join(x),
+            for idx in range(batch_count):
+                index = np.arange(batch_size*idx, batch_size*(idx+1)).astype(str)
+
+                comment_content = np.apply_along_axis(
+                    func1d=lambda x: " ".join(x),
                     axis=1,
-                    arr=rng.choice(a=list(string), size=(batch_size, 6, 8))
-                )
-            )
-
-            comment_timestamps = np.sort(np.random.randint(
-                low=start_time+batch_timediff*idx,
-                high=start_time+batch_timediff*(idx+1),
-                size=batch_size
-            ))
-
-            temp_status_id = rng.choice(
-                a=range(12, 16),
-                size=batch_size,
-                p=[0.97, 0.0015, 0.0085, 0.02]
-            )
-
-            image_status = np.array([
-                12 if t < int(mktime(fasttime.parse_datetime("2023-12-21").timetuple())) else temp_status_id[idx]
-                for idx, t in enumerate(comment_timestamps)
-            ])
-
-            comment_edited = np.random.randint(low=0, high=2, size=batch_size)
-            comment_likes = np.random.geometric(0.1, size=batch_size)
-            comment_dislikes = np.random.geometric(0.2, size=batch_size)
-
-            file.writelines(
-                (
-                    ",".join(row)+"\n"
-                    for row
-                    in zip(
-                        index,
-                        temp_status_id.astype(str), comment_content.astype(str), comment_timestamps.astype(str),
-                        comment_edited.astype(str), comment_likes.astype(str), comment_dislikes.astype(str)
+                    arr=np.apply_along_axis(
+                        func1d=lambda x:"".join(x),
+                        axis=1,
+                        arr=rng.choice(a=list(string), size=(batch_size, 6, 8))
                     )
                 )
-            )
 
-    del (
-        batch_size, batch_count, newline_padding, file, idx, temp_status_id,
-        image_status, comment_content, comment_timestamps, comment_edited,
-        comment_likes, comment_dislikes, index, string, start_time, end_time,
-        batch_timediff
-    )
+                comment_timestamps = np.sort(np.random.randint(
+                    low=start_time+batch_timediff*idx,
+                    high=start_time+batch_timediff*(idx+1),
+                    size=batch_size
+                ))
+
+                temp_status_id = rng.choice(
+                    a=range(12, 16),
+                    size=batch_size,
+                    p=[0.97, 0.0015, 0.0085, 0.02]
+                )
+
+                image_status = np.array([
+                    12 if t < int(mktime(fasttime.parse_datetime("2023-12-21").timetuple())) else temp_status_id[idx]
+                    for idx, t in enumerate(comment_timestamps)
+                ])
+
+                comment_edited = np.random.randint(low=0, high=2, size=batch_size)
+                comment_likes = np.random.geometric(0.1, size=batch_size)
+                comment_dislikes = np.random.geometric(0.2, size=batch_size)
+
+                file.writelines(
+                    (
+                        ",".join(row)+"\n"
+                        for row
+                        in zip(
+                            index,
+                            temp_status_id.astype(str), comment_content.astype(str), comment_timestamps.astype(str),
+                            comment_edited.astype(str), comment_likes.astype(str), comment_dislikes.astype(str)
+                        )
+                    )
+                )
+
+        del (
+            batch_size, batch_count, newline_padding, file, idx, temp_status_id,
+            image_status, comment_content, comment_timestamps, comment_edited,
+            comment_likes, comment_dislikes, index, string, start_time, end_time,
+            batch_timediff
+        )
+    except Exception as err:
+        print("Warning error creating comments table. {err}")
 
 
 ## Image Tag Junction Table
 if not path.exists("./database/csv/image_tag_junction.csv"):
-    batch_size = 100_000
-    tag_timestamps = pd.read_csv("./database/csv/tags_table.csv", usecols=["creation_timestamp"]).to_numpy()
-    random_func = lambda size: np.random.lognormal(mean=np.log(3), sigma=0.5, size=size)
+    print("Creating image tag junction table.")
 
-    with open("./database/csv/images_table.csv", "r") as image_file, open("./database/csv/image_tag_junction.csv", "a+") as output_file:
-        # Removing headers
-        image_file.readline()
+    try:
+        batch_size = 100_000
+        tag_timestamps = pd.read_csv("./database/csv/tags_table.csv", usecols=["creation_timestamp"]).to_numpy()
+        random_func = lambda size: np.random.lognormal(mean=np.log(3), sigma=0.5, size=size)
 
-        # Batched data processing
-        for batch_idx, line in enumerate(image_file):
-            
-            # Loading batched data from csv file
-            image_line = [image_file.readline() for _ in range(batch_size)]
-            image_timestamps = []
-            for line in image_line:
-                try:
-                    image_timestamps.append(line[1:-1].split(",")[4])
-                except:
-                    pass
-            image_timestamps = np.array(image_timestamps).astype(int)
+        with open("./database/csv/images_table.csv", "r") as image_file, open("./database/csv/image_tag_junction.csv", "a+") as output_file:
+            # Removing headers
+            image_file.readline()
 
-            result = time_dependent_random(
-                independent_time=tag_timestamps,
-                dependent_time=image_timestamps,
-                random_func=random_func,
-                offset=batch_idx*batch_size
-            ).astype(int)
-            result = np.vstack(sorted(np.unique(result, axis=0), key=lambda x: x[1])).astype(str)
+            # Batched data processing
+            for batch_idx, line in enumerate(image_file):
+                
+                # Loading batched data from csv file
+                image_line = [image_file.readline() for _ in range(batch_size)]
+                image_timestamps = []
+                for line in image_line:
+                    try:
+                        image_timestamps.append(line[1:-1].split(",")[4])
+                    except:
+                        pass
+                image_timestamps = np.array(image_timestamps).astype(int)
+
+                result = time_dependent_random(
+                    independent_time=tag_timestamps,
+                    dependent_time=image_timestamps,
+                    random_func=random_func,
+                    offset=batch_idx*batch_size
+                ).astype(int)
+                result = np.vstack(sorted(np.unique(result, axis=0), key=lambda x: x[1])).astype(str)
+
+                output_file.writelines(
+                    ",".join(row)+"\n"
+                    for row
+                    in result
+                )
+        del batch_idx, batch_size, image_file, image_line, image_timestamps, line, output_file, tag_timestamps, result
+    except Exception as err:
+        print("Warning error creating image tag junction table. {err}")
+
+
+## User Comments Junction Table
+if not path.exists("./database/csv/user_comments_junction.csv"):
+    print("Creating user comments junction table.")
+
+    try:
+        batch_size = 100_000
+        batch_count = 2_500_000//batch_size
+        user_timestamps = np.transpose(pd.read_csv("./database/csv/users_table.csv", usecols=["creation_timestamp"]).to_numpy())[0]
+        random_func = lambda size: np.zeros(shape=size)
+
+        with open("./database/csv/comments_table.csv", "r") as comment_file, open("./database/csv/user_comment_junction.csv", "a+") as output_file:
+            # Removing headers
+            comment_file.readline()
+
+            # Batched data processing
+            for batch_idx, batch_line in enumerate(comment_file):
+                
+                # Loading batched data from csv file
+                comment_line = [comment_file.readline() for _ in range(batch_size)]
+                comment_timestamps = []
+                for line in comment_line:
+                    try:
+                        comment_timestamps.append(line[1:-1].split(",")[3])
+                    except:
+                        pass
+                comment_timestamps = np.array(comment_timestamps).astype(int)
+
+                result = time_dependent_random(
+                    independent_time=user_timestamps,
+                    dependent_time=comment_timestamps,
+                    random_func=random_func,
+                    offset=batch_idx*batch_size
+                )
+
+                output_file.writelines(
+                    ",".join(row)+"\n"
+                    for row
+                    in time_dependent_random(
+                        independent_time=user_timestamps,
+                        dependent_time=comment_timestamps,
+                        random_func=random_func,
+                        offset=batch_idx*batch_size
+                    ).astype(str)
+                )
+        del (
+            batch_size, batch_count, user_timestamps, random_func, comment_file, output_file,
+            batch_idx, line, comment_line, comment_timestamps, comment_line, result
+        )
+    except Exception as err:
+        print("Warning error creating user comments junction table. {err}")
+
+
+## User Favourites Junction Table
+if not path.exists("./database/csv/user_favourites_junction.csv"):
+    print("Creating user favourites junction table.")
+
+    try:
+        user_timestamps = np.transpose(pd.read_csv("./database/csv/users_table.csv", usecols=["creation_timestamp"]).to_numpy())[0]
+        with open("./database/csv/user_favourites_junction.csv", "a+") as output_file:
+            # Removing headers
+            user_timestamps = np.transpose(pd.read_csv("./database/csv/users_table.csv", usecols=["creation_timestamp"]).to_numpy())[0]
+
+            user_fave_count = np.round(
+                    np.power(
+                        np.log1p(
+                            np.log1p(
+                                np.floor_divide(
+                                    (mktime(fasttime.parse_datetime("2023-12-28").timetuple()) - user_timestamps),
+                                    86400
+                                )
+                            )
+                        ) + 0 + 3*rng.random(size=user_timestamps.shape[0]),
+                        3
+                    )
+                ).astype(int)
+
+
+            result = np.column_stack((
+                np.repeat(np.arange(0, user_timestamps.shape[0]), user_fave_count),
+                np.random.choice(np.arange(0, 1_000_000), size=user_fave_count.sum()).astype(int)
+            ))
+
+            result = np.vstack(sorted(np.unique(result, axis=0), key=lambda x: 1_000_000*x[0]+x[1])).astype(str)
 
             output_file.writelines(
                 ",".join(row)+"\n"
                 for row
                 in result
             )
-    del batch_idx, batch_size, image_file, image_line, image_timestamps, line, output_file, tag_timestamps, result
-
-
-## User Comments Junction Table
-if not path.exists("./database/csv/user_comments_junction.csv"):
-    batch_size = 100_000
-    batch_count = 2_500_000//batch_size
-    user_timestamps = np.transpose(pd.read_csv("./database/csv/users_table.csv", usecols=["creation_timestamp"]).to_numpy())[0]
-    random_func = lambda size: np.zeros(shape=size)
-
-    with open("./database/csv/comments_table.csv", "r") as comment_file, open("./database/csv/user_comment_junction.csv", "a+") as output_file:
-        # Removing headers
-        comment_file.readline()
-
-        # Batched data processing
-        for batch_idx, line in enumerate(comment_file):
-            
-            # Loading batched data from csv file
-            comment_line = [comment_file.readline() for _ in range(batch_size)]
-            comment_timestamps = []
-            for line in comment_line:
-                try:
-                    comment_timestamps.append(line[1:-1].split(",")[3])
-                except:
-                    pass
-            comment_timestamps = np.array(comment_timestamps).astype(int)
-
-            result = time_dependent_random(
-                independent_time=user_timestamps,
-                dependent_time=comment_timestamps,
-                random_func=random_func,
-                offset=batch_idx*batch_size
-            )
-
-            output_file.writelines(
-                ",".join(row)+"\n"
-                for row
-                in time_dependent_random(
-                    independent_time=user_timestamps,
-                    dependent_time=comment_timestamps,
-                    random_func=random_func,
-                    offset=batch_idx*batch_size
-                ).astype(str)
-            )
-
-
-## User Favourites Junction Table
-if not path.exists("./database/csv/user_favourites_junction.csv"):
-    user_timestamps = np.transpose(pd.read_csv("./database/csv/users_table.csv", usecols=["creation_timestamp"]).to_numpy())[0]
-
-    with open("./database/csv/user_favourites_junction.csv", "a+") as output_file:
-        # Removing headers
-        user_timestamps = np.transpose(pd.read_csv("./database/csv/users_table.csv", usecols=["creation_timestamp"]).to_numpy())[0]
-
-        user_fave_count = np.round(
-                np.power(
-                    np.log1p(
-                        np.log1p(
-                            np.floor_divide(
-                                (mktime(fasttime.parse_datetime("2023-12-28").timetuple()) - user_timestamps),
-                                86400
-                            )
-                        )
-                    ) + 0 + 3*rng.random(size=user_timestamps.shape[0]),
-                    3
-                )
-            ).astype(int)
-
-
-        result = np.column_stack((
-            np.repeat(np.arange(0, user_timestamps.shape[0]), user_fave_count),
-            np.random.choice(np.arange(0, 1_000_000), size=user_fave_count.sum()).astype(int)
-        ))
-
-        result = np.vstack(sorted(np.unique(result, axis=0), key=lambda x: 1_000_000*x[0]+x[1])).astype(str)
-
-        output_file.writelines(
-            ",".join(row)+"\n"
-            for row
-            in result
-        )
-    del output_file, result, user_fave_count, user_timestamps
+        del output_file, result, user_fave_count, user_timestamps
+    except Exception as err:
+        print("Warning error creating user favourites junction table. {err}")
