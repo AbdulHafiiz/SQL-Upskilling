@@ -96,9 +96,13 @@ def main():
     # Text padding
     description = cycle([""])
 
+    # Database connection
+    con = sql.connect("./database/website_database.db")
+
     for batch_idx in range(batch_count):
         index = np.arange(batch_size*batch_idx, batch_size*(batch_idx+1))
         image_timestamps = full_image_timestamps[batch_size*batch_idx:batch_size*(batch_idx+1)]
+        print(min(image_timestamps), max(image_timestamps))
         
         # Image URLs and UUIDs
         urls = np.array([
@@ -151,39 +155,39 @@ def main():
         dislikes = np.random.geometric(0.02, size=batch_size)
 
 
-        with sql.connect("./database/website_database.db") as con:
-            con.executemany(
-                """
-                INSERT INTO images_table (
-                    image_id,
-                    source_url,
-                    blob_storage_uuid,
-                    shape,
-                    upload_timestamp,
-                    upload_date,
-                    status_id,
-                    description,
-                    uploader_id,
-                    likes,
-                    dislikes
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-                """,
-                zip(
-                    index.astype(str), urls.astype(str), blob_uuids,
-                    image_shape.astype(str), image_timestamps[batch_size*batch_idx:batch_size*(batch_idx+1)].astype(str),
-                    image_dates.astype(str), image_status.astype(str),
-                    description, uploader_id.astype(str), likes.astype(str),
-                    dislikes.astype(str)
-                )
+        con.executemany(
+            """
+            INSERT INTO images_table (
+                image_id,
+                source_url,
+                blob_storage_uuid,
+                shape,
+                upload_timestamp,
+                upload_date,
+                status_id,
+                description,
+                uploader_id,
+                likes,
+                dislikes
             )
-            res = con.execute(
-                """
-                SELECT COUNT(*)
-                FROM images_table;
-                """
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            """,
+            zip(
+                index.astype(str), urls.astype(str), blob_uuids,
+                image_shape.astype(str), image_timestamps.astype(str),
+                image_dates.astype(str), image_status.astype(str),
+                description, uploader_id.astype(str), likes.astype(str),
+                dislikes.astype(str)
             )
-            print(res.fetchall())
+        )
+        con.commit()
+        res = con.execute(
+            """
+            SELECT MIN(upload_timestamp), MAX(upload_timestamp), COUNT(*)
+            FROM images_table;
+            """
+        )
+        print(res.fetchall())
 
     del ( 
         batch_size, batch_count, common_aspect_ratios, custom_uncommon_ratios, image_sizes, pixelart_heights, custom_image_heights,
@@ -198,5 +202,4 @@ if __name__ == "__main__":
         print("Importing image table data")
         main()
     except Exception as err:
-        raise err
         print(f"Warning error importing image table data. {err}")
