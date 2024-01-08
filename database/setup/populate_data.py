@@ -308,13 +308,14 @@ def main():
 
         try:
             batch_size = 100_000
+            image_timestamps = np.transpose(pd.read_csv("./database/csv/image_timestamps.csv").to_numpy())[0]
+            batch_count = image_timestamps.shape[0]//batch_size
             tag_timestamps = pd.read_csv("./database/csv/tags_table.csv", usecols=["creation_timestamp"]).to_numpy()
             random_func = lambda size: np.random.lognormal(mean=np.log(3), sigma=0.5, size=size)
-            image_timestamps = np.transpose(pd.read_csv("./database/csv/image_timestamps.csv").to_numpy())[0]
 
             with open("./database/csv/image_timestamps.csv", "r") as image_file, open("./database/csv/image_tag_junction.csv", "a+") as output_file:
                 # Batched data processing
-                for batch_idx in range(image_timestamps.shape[0]//batch_size):
+                for batch_idx in range(batch_count+1):
                     
                     # Loading batched data from csv file
                     result = time_dependent_random(
@@ -375,7 +376,7 @@ def main():
                     )
             del (
                 batch_size, batch_count, user_timestamps, random_func, comment_file, output_file,
-                batch_idx, line, comment_line, comment_timestamps, comment_line
+                batch_idx, line, comment_line, comment_timestamps
             )
         except Exception as err:
             print(f"Warning error creating user comments junction table. {err}")
