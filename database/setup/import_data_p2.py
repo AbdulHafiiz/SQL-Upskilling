@@ -102,7 +102,6 @@ def main():
     for batch_idx in range(batch_count):
         index = np.arange(batch_size*batch_idx, batch_size*(batch_idx+1))
         image_timestamps = full_image_timestamps[batch_size*batch_idx:batch_size*(batch_idx+1)]
-        print(min(image_timestamps), max(image_timestamps))
         
         # Image URLs and UUIDs
         urls = np.array([
@@ -181,13 +180,6 @@ def main():
             )
         )
         con.commit()
-        res = con.execute(
-            """
-            SELECT MIN(upload_timestamp), MAX(upload_timestamp), COUNT(*)
-            FROM images_table;
-            """
-        )
-        print(res.fetchall())
 
     del ( 
         batch_size, batch_count, common_aspect_ratios, custom_uncommon_ratios, image_sizes, pixelart_heights, custom_image_heights,
