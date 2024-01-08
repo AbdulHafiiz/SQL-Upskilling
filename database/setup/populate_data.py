@@ -363,13 +363,6 @@ def main():
                             pass
                     comment_timestamps = np.array(comment_timestamps).astype(int)
 
-                    result = time_dependent_random(
-                        independent_time=user_timestamps,
-                        dependent_time=comment_timestamps,
-                        random_func=random_func,
-                        offset=batch_idx*batch_size
-                    )
-
                     output_file.writelines(
                         ",".join(row)+"\n"
                         for row
@@ -382,7 +375,7 @@ def main():
                     )
             del (
                 batch_size, batch_count, user_timestamps, random_func, comment_file, output_file,
-                batch_idx, line, comment_line, comment_timestamps, comment_line, result
+                batch_idx, line, comment_line, comment_timestamps, comment_line
             )
         except Exception as err:
             print(f"Warning error creating user comments junction table. {err}")
