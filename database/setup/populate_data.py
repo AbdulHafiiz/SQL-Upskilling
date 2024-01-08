@@ -124,7 +124,7 @@ def main():
             with open("./database/setup/reference/nouns.txt", "r") as file:
                 nouns = file.read().splitlines()
 
-            tag_names = np.random.choice(a=nouns, size=400)
+            tag_names = np.random.choice(a=nouns, size=400, replace=False)
             tag_count = len(tag_names)
             description = cycle([""])
 
