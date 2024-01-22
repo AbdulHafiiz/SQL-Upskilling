@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS comments_table (
 ) STRICT;
 
 -- USER COMMENT JUNCTION TABLE
-
+-- TODO Drop user_comment_junction, since it is not a many to many table, use FK reference on comments table instead
 CREATE TABLE IF NOT EXISTS user_comment_junction (
     user_id INTEGER NOT NULL,
     comment_id INTEGER NOT NULL,
